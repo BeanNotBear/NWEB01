@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NWEB01.Domain\NWEB01.Domain.csproj" />
+    <ProjectReference Include="..\ShareKernel\ShareKernel.csproj" />
   </ItemGroup>
 
 </Project>

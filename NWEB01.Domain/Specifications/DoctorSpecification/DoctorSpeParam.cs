@@ -1,9 +1,12 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-
-namespace NWEB01.Domain.Specifications
+namespace NWEB01.Domain.Specifications.DoctorSpecification
 {
-	public class UserSpeParam
+	public class DoctorSpeParam
 	{
 		private const int MaxPageSize = 50;
 		public int pageIndex { get; set; } = 1;
@@ -13,8 +16,8 @@ namespace NWEB01.Domain.Specifications
 			get => _pageSize;
 			set => _pageSize = (value > MaxPageSize) ? MaxPageSize : value;
 		}
-        public int? Role { get; set; }
-        public bool IsDescending { get; set; } = false;
+		public string? Specialization { get; set; }
+		public bool IsDescending { get; set; } = false;
 		public string? _search;
 		public string? Search
 		{

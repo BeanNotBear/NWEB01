@@ -14,8 +14,8 @@ namespace NWEB01.Application.Mapping
 	{
         public ProfilesMapping()
         {
-            CreateMap<User, UserDTO>().ReverseMap();
-            CreateMap<PaginationList<User>, PaginationList<UserDTO>>().ReverseMap();
-        }
+            CreateMap<User, DoctorDTO>().ReverseMap();
+			CreateMap<PaginationList<User>, PaginationList<DoctorDTO>>().ReverseMap();
+		}
     }
 }

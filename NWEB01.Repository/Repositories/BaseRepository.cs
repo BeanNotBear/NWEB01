@@ -1,13 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NWEB01.Domain.Entities;
 using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
 using NWEB01.Repository.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NWEB01.Repository.Repositories
 {
@@ -46,7 +40,7 @@ namespace NWEB01.Repository.Repositories
 			// Filter
 			if (spec.Criterias != null)
 			{
-				entities.Where(spec.Criterias);
+				entities = entities.Where(spec.Criterias);
 			}
 
 			// Include
@@ -61,13 +55,13 @@ namespace NWEB01.Repository.Repositories
 			// Sort by
 			if (spec.OrderBy != null)
 			{
-				entities.OrderBy(spec.OrderBy);
+				entities = entities.OrderBy(spec.OrderBy);
 			}
 
 			// Sort Descending
 			if (spec.Descending != null)
 			{
-				entities.OrderByDescending(spec.Descending);
+				entities = entities.OrderByDescending(spec.Descending);
 			}
 
 			var totalRecords = await entities.CountAsync();
@@ -76,7 +70,7 @@ namespace NWEB01.Repository.Repositories
 			// Paging
 			if (spec.IsPagingEnable)
 			{
-				entities.Skip(spec.Skip).Take(spec.Take);
+				entities = entities.Skip(spec.Skip).Take(spec.Take);
 			}
 
 			var items = await entities.ToListAsync();

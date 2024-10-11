@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace NWEB01.Domain.Interfaces
 {
-	// IBaseRepository<Object, Id>
-	public interface IUserRepository : IBaseRepository<User, Guid>
-	{
-	}
+    public interface IDoctorRepository : IBaseRepository<User, Guid>
+    {
+    }
 }
