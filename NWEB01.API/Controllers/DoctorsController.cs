@@ -30,6 +30,10 @@ namespace NWEB01.API.Controllers
 		public async Task<IActionResult> GetById([FromRoute] Guid id, [FromQuery] bool isInclude = false)
 		{
 			var doctor = await doctorService.GetDoctorById(id, isInclude);
+			if(doctor == null)
+			{
+				return NotFound();
+			}
 			return Ok(doctor);
 		}
 
@@ -37,6 +41,10 @@ namespace NWEB01.API.Controllers
 		public async Task<IActionResult> Create([FromBody] AddDoctorRequest addDoctorRequest)
 		{
 			var doctorDTO = await doctorService.AddDoctor(addDoctorRequest);
+			if(doctorDTO == null)
+			{
+				return BadRequest();
+			}
 			return CreatedAtAction(nameof(GetById), new { id = doctorDTO.Id }, doctorDTO);
 		}
 
@@ -50,6 +58,18 @@ namespace NWEB01.API.Controllers
 				return NotFound();
 			}
 			return Ok(doctorDTO);
+		}
+
+		[HttpDelete]
+		[Route("{id:guid}")]
+		public async Task<IActionResult> Delete([FromRoute] Guid id)
+		{
+			var isDeleted = await doctorService.DeleteDoctor(id);
+			if (!isDeleted)
+			{
+				return NotFound();
+			}
+			return NoContent();
 		}
 	}
 }

@@ -26,6 +26,12 @@ namespace NWEB01.Application.Services.UserService
 			return doctorDTO;
 		}
 
+		public Task<bool> DeleteDoctor(Guid id)
+		{
+			var isDeleted = doctorRepository.Delete(id);
+			return isDeleted;
+		}
+
 		public async Task<DoctorDTO> GetDoctorById(Guid id, bool isInclude)
 		{
 			User doctorDomain;
