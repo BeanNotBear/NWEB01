@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NWEB01.Domain.Specifications.DoctorSpecification
+﻿namespace NWEB01.Domain.Specifications.DoctorSpecification
 {
 	public class DoctorSpeParam
 	{
@@ -18,7 +12,8 @@ namespace NWEB01.Domain.Specifications.DoctorSpecification
 		}
 		public string? Specialization { get; set; }
 		public bool IsDescending { get; set; } = false;
-		public string? _search;
+		public bool IsIncludeAppoitment { get; set; } = false;
+        public string? _search;
 		public string? Search
 		{
 			get => _search;

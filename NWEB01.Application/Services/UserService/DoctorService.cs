@@ -30,7 +30,7 @@ namespace NWEB01.Application.Services.UserService
 				(string.IsNullOrEmpty(doctorSpeParam.Search) || x.Name.Contains(doctorSpeParam.Search)) &&
 				(x.Role == 0) &&
 				(!(doctorSpeParam.Specialization != null) || x.Specialization == doctorSpeParam.Specialization)
-				
+
 			);
 
 			int skip = (doctorSpeParam.pageIndex - 1) * doctorSpeParam.pageSize;
@@ -44,6 +44,11 @@ namespace NWEB01.Application.Services.UserService
 			else
 			{
 				spec.AddDescending(x => x.Name);
+			}
+
+			if (doctorSpeParam.IsIncludeAppoitment)
+			{
+				spec.AddInclude(x => x.DoctorAppointments);
 			}
 
 			var doctorDomain = await doctorRepository.GetAll(spec);

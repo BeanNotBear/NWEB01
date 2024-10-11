@@ -1,9 +1,4 @@
-﻿using NWEB01.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ShareKernel.Enum;
 
 namespace NWEB01.Application.DTOs
 {
@@ -13,8 +8,7 @@ namespace NWEB01.Application.DTOs
 		public string Name { get; set; }
 		public string Email { get; set; }
 		public DateTime? DateOfBirth { get; set; }
-		public int Role { get; set; }
 		public string Specialization { get; set; }
-		public List<Appointment> DoctorAppointments { get; set; }
+		public List<AppointmentDTO> DoctorAppointments { get; set; }
 	}
 }
