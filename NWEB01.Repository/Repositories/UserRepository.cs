@@ -45,7 +45,7 @@ namespace NWEB01.Repository.Repositories
 
 			if (spec.Criterias != null)
 			{
-				query = query.Include(spec.Criterias);
+				query = query.Where(spec.Criterias);
 			}
 
 			if (spec.Includes != null)

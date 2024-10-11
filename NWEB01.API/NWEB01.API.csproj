@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\NWEB01.Application\NWEB01.Application.csproj" />
     <ProjectReference Include="..\NWEB01.Domain\NWEB01.Domain.csproj" />
     <ProjectReference Include="..\NWEB01.Repository\NWEB01.Repository.csproj" />

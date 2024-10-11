@@ -1,4 +1,5 @@
-﻿using NWEB01.Application.DTOs;
+﻿using AutoMapper;
+using NWEB01.Application.DTOs;
 using NWEB01.Domain.Entities;
 using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
@@ -14,13 +15,15 @@ namespace NWEB01.Application.Services.UserService
 	{
 
 		private IUserRepository userRepository;
+		private IMapper mapper;
 
-		public UserServices(IUserRepository userRepository)
+		public UserServices(IUserRepository userRepository, IMapper mapper)
 		{
 			this.userRepository = userRepository;
+			this.mapper = mapper;
 		}
 
-		public Task<PaginationList<UserDTO>> GetUsers(UserSpeParam userSpeParam)
+		public async Task<PaginationList<UserDTO>> GetUsers(UserSpeParam userSpeParam)
 		{
 			int skip = (userSpeParam.pageIndex - 1) * userSpeParam.pageSize;
 			int take = userSpeParam.pageSize;
@@ -30,9 +33,14 @@ namespace NWEB01.Application.Services.UserService
 				(!userSpeParam.Role.HasValue || x.Role == userSpeParam.Role)
 			);
 
-			userRepository.GetAll(spec);
+			var userDomains = await userRepository.GetAll(spec);
 
-			throw new NotImplementedException();
+			var userDTOs = mapper.Map<List<UserDTO>>(userDomains);
+			var totalRecords = await userRepository.CountItems();
+			var totalPage = (int)Math.Ceiling((double)totalRecords / userSpeParam.pageSize);
+
+			var result = new PaginationList<UserDTO>(userDTOs, userSpeParam.pageIndex, totalPage, totalRecords);
+			return result;
 		}
 	}
 }

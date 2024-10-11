@@ -1,7 +1,10 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NWEB01.Application.Mapping;
+using NWEB01.Application.Services.UserService;
+using NWEB01.Domain.Interfaces;
 using NWEB01.Repository.Data;
+using NWEB01.Repository.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(ProfilesMapping));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserServices>();
 
 var app = builder.Build();
 
