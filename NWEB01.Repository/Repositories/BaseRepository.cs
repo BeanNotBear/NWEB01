@@ -93,12 +93,16 @@ namespace NWEB01.Repository.Repositories
 			return entity;
 		}
 
-		public async Task<T?> Update(T entity)
+		public async Task<T?> Update(P id, T entity)
 		{
-			dbContext.Set<T>().Attach(entity);
-			dbContext.Entry(entity).State = EntityState.Modified;
+			var existingEntity = await dbContext.Set<T>().FindAsync(id);
+			if (existingEntity != null)
+			{
+				dbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
+			}
+
 			await dbContext.SaveChangesAsync();
-			return entity;
+			return existingEntity;
 		}
 	}
 }

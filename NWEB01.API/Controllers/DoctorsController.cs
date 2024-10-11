@@ -39,5 +39,17 @@ namespace NWEB01.API.Controllers
 			var doctorDTO = await doctorService.AddDoctor(addDoctorRequest);
 			return CreatedAtAction(nameof(GetById), new { id = doctorDTO.Id }, doctorDTO);
 		}
+
+		[HttpPut]
+		[Route("{id:guid}")]
+		public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateDoctorRequest updateDoctorRequest)
+		{
+			var doctorDTO = await doctorService.UpdateDoctor(id, updateDoctorRequest);
+			if (doctorDTO == null)
+			{
+				return NotFound();
+			}
+			return Ok(doctorDTO);
+		}
 	}
 }

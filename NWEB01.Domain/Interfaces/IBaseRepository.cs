@@ -14,7 +14,7 @@ namespace NWEB01.Domain.Interfaces
 		Task<PaginationList<T>> GetAll(ISpecifications<T> spec);
 		Task<T?> GetById(P id, Expression<Func<T, object>> include);
 		Task<T?> Add(T entity);
-		Task<T?> Update(T entity);
+		Task<T?> Update(P id, T entity);
 		Task<bool> Delete(P id);
 	}
 }

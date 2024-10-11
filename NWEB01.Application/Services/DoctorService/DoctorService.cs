@@ -4,13 +4,6 @@ using NWEB01.Domain.Entities;
 using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
 using NWEB01.Domain.Specifications.DoctorSpecification;
-using ShareKernel.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NWEB01.Application.Services.UserService
 {
@@ -82,6 +75,15 @@ namespace NWEB01.Application.Services.UserService
 			var result = mapper.Map<PaginationList<DoctorDTO>>(doctorDomain);
 
 			return result;
+		}
+
+		public async Task<DoctorDTO> UpdateDoctor(Guid id, UpdateDoctorRequest updateDoctorRequest)
+		{
+			var doctorDomain = mapper.Map<User>(updateDoctorRequest);
+			doctorDomain.Id = id;
+			var updatedDoctor = await doctorRepository.Update(id, doctorDomain);
+			var doctorDTO = mapper.Map<DoctorDTO>(updatedDoctor);
+			return doctorDTO;
 		}
 	}
 }
