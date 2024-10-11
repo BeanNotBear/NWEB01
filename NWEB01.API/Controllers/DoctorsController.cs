@@ -34,7 +34,6 @@ namespace NWEB01.API.Controllers
 		}
 
 		[HttpPost]
-		[Route("{id:guid}")]
 		public async Task<IActionResult> Create([FromBody] AddDoctorRequest addDoctorRequest)
 		{
 			var doctorDTO = await doctorService.AddDoctor(addDoctorRequest);
