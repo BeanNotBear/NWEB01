@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NWEB01.Domain", "NWEB01.Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NWEB01.API", "NWEB01.API\NWEB01.API.csproj", "{7E8D8055-D428-46D6-90CC-55342A95FF97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NWEB01.Repository", "NWEB01.Repository\NWEB01.Repository.csproj", "{16610B0B-6129-472D-A2F7-9C063FDBC099}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NWEB01.Repository", "NWEB01.Repository\NWEB01.Repository.csproj", "{16610B0B-6129-472D-A2F7-9C063FDBC099}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NWEB01.Application", "NWEB01.Application\NWEB01.Application.csproj", "{8EE18214-9880-4F5C-B837-85A01A405459}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NWEB01.Application", "NWEB01.Application\NWEB01.Application.csproj", "{8EE18214-9880-4F5C-B837-85A01A405459}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareKernel", "ShareKernel\ShareKernel.csproj", "{AAE0D835-CD74-43D3-AE7B-88ACB905F712}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{8EE18214-9880-4F5C-B837-85A01A405459}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EE18214-9880-4F5C-B837-85A01A405459}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EE18214-9880-4F5C-B837-85A01A405459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAE0D835-CD74-43D3-AE7B-88ACB905F712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAE0D835-CD74-43D3-AE7B-88ACB905F712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAE0D835-CD74-43D3-AE7B-88ACB905F712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAE0D835-CD74-43D3-AE7B-88ACB905F712}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
