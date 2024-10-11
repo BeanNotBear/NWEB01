@@ -8,6 +8,7 @@ using ShareKernel.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +23,32 @@ namespace NWEB01.Application.Services.UserService
 		{
 			this.doctorRepository = doctorRepository;
 			this.mapper = mapper;
+		}
+
+		public async Task<DoctorDTO> AddDoctor(AddDoctorRequest addDoctorRequest)
+		{
+			var doctorDomain = mapper.Map<User>(addDoctorRequest);
+			await doctorRepository.Add(doctorDomain);
+			var doctorDTO = mapper.Map<DoctorDTO>(doctorDomain);
+			return doctorDTO;
+		}
+
+		public async Task<DoctorDTO> GetDoctorById(Guid id, bool isInclude)
+		{
+			User doctorDomain;
+
+			if (isInclude)
+			{
+				// Include related DoctorAppointments
+				doctorDomain = await doctorRepository.GetById(id, d => d.DoctorAppointments);
+			}
+			else
+			{
+				// Get the doctor without related appointments
+				doctorDomain = await doctorRepository.GetById(id, null);
+			}
+			var doctorDTO = mapper.Map<DoctorDTO>(doctorDomain);
+			return doctorDTO;
 		}
 
 		public async Task<PaginationList<DoctorDTO>> GetDoctors(DoctorSpeParam doctorSpeParam)

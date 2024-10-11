@@ -7,5 +7,7 @@ namespace NWEB01.Application.Services.UserService
     public interface IDoctorService
     {
 		public Task<PaginationList<DoctorDTO>> GetDoctors(DoctorSpeParam doctorSpeParam);
+		public Task<DoctorDTO> AddDoctor(AddDoctorRequest addDoctorRequest);
+		public Task<DoctorDTO> GetDoctorById(Guid id,bool isInclude);
 	}
 }

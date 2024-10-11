@@ -2,6 +2,7 @@
 using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
 using NWEB01.Repository.Data;
+using System.Linq.Expressions;
 
 namespace NWEB01.Repository.Repositories
 {
@@ -81,9 +82,14 @@ namespace NWEB01.Repository.Repositories
 			return result;
 		}
 
-		public async Task<T?> GetById(P id)
+		public async Task<T?> GetById(P id, Expression<Func<T, object>> include)
 		{
-			var entity = await dbContext.Set<T>().FindAsync(id);
+			var entities = dbContext.Set<T>().AsQueryable();
+			if (include != null)
+			{
+				entities = entities.Include(include);
+			}
+			var entity = await entities.FirstOrDefaultAsync(x => EF.Property<P>(x, "Id").Equals(id));
 			return entity;
 		}
 

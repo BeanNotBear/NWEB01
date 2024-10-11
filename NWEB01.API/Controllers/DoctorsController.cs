@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NWEB01.Application.DTOs;
 using NWEB01.Application.Services.UserService;
 using NWEB01.Domain.Specifications.DoctorSpecification;
 
@@ -22,6 +23,22 @@ namespace NWEB01.API.Controllers
 		{
 			var doctors = await doctorService.GetDoctors(doctorSpeParam);
 			return Ok(doctors);
+		}
+
+		[HttpGet]
+		[Route("{id:guid}")]
+		public async Task<IActionResult> GetById([FromRoute] Guid id, [FromQuery] bool isInclude = false)
+		{
+			var doctor = await doctorService.GetDoctorById(id, isInclude);
+			return Ok(doctor);
+		}
+
+		[HttpPost]
+		[Route("{id:guid}")]
+		public async Task<IActionResult> Create([FromBody] AddDoctorRequest addDoctorRequest)
+		{
+			var doctorDTO = await doctorService.AddDoctor(addDoctorRequest);
+			return CreatedAtAction(nameof(GetById), new { id = doctorDTO.Id }, doctorDTO);
 		}
 	}
 }

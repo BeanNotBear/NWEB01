@@ -18,6 +18,7 @@ namespace NWEB01.Application.Mapping
 			CreateMap<User, DoctorDTO>().ReverseMap();
 			CreateMap<Appointment, AppointmentDTO>().ForMember(dest => dest.Status, opt => opt.MapFrom(src => ((Status)src.Status).ToString())).ReverseMap();
 			CreateMap<PaginationList<User>, PaginationList<DoctorDTO>>().ReverseMap();
+			CreateMap<User, AddDoctorRequest>().ReverseMap();
 		}
 	}
 }
