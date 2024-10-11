@@ -10,11 +10,10 @@ namespace NWEB01.Domain.Interfaces
 {
 	public interface IBaseRepository<T, P>
 	{
-		Task<PaginationList<User>> GetAll(ISpecifications<T> spec);
+		Task<PaginationList<T>> GetAll(ISpecifications<T> spec);
 		Task<T?> GetById(P id);
 		Task<T?> Add(T entity);
-		Task<T?> Update(P id, T entity);
+		Task<T?> Update(T entity);
 		Task<bool> Delete(P id);
-		Task<int> CountItems();
 	}
 }
