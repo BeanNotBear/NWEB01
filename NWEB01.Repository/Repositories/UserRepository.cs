@@ -39,7 +39,7 @@ namespace NWEB01.Repository.Repositories
 			throw new NotImplementedException();
 		}
 
-		public async Task<List<User>> GetAll(ISpecifications<User> spec)
+		public async Task<PaginationList<User>> GetAll(ISpecifications<User> spec)
 		{
 			var query = dbContext.Users.AsQueryable();
 
@@ -58,22 +58,29 @@ namespace NWEB01.Repository.Repositories
 
 			if (spec.OrderBy != null)
 			{
-				query = query.OrderBy(spec.OrderBy);
+				query = query.OrderByDescending(spec.OrderBy);
 			}
 
-			if (spec.Ascending != null)
+			if (spec.Descending != null)
 			{
-				query = query.OrderBy(spec.Ascending);
+				query = query.OrderBy(spec.Descending);
 			}
+
+			var totalRecords = await query.CountAsync();
 
 			if (spec.IsPagingEnable)
 			{
 				query = query.Skip(spec.Skip).Take(spec.Take);
 			}
+			
+			var totalPage = (int)Math.Ceiling((double)totalRecords / spec.Take);
+			int pageIndex = spec.Skip / spec.Take + 1;
 
 			var items = await query.ToListAsync();
 
-			return await query.ToListAsync();
+			var result = new PaginationList<User>(items, pageIndex, totalPage, totalRecords);
+
+			return result;
 		}
 
 		public Task<User?> GetById(Guid id)

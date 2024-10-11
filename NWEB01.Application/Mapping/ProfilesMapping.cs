@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NWEB01.Application.DTOs;
 using NWEB01.Domain.Entities;
+using NWEB01.Domain.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace NWEB01.Application.Mapping
         public ProfilesMapping()
         {
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<PaginationList<User>, PaginationList<UserDTO>>().ReverseMap();
         }
     }
 }

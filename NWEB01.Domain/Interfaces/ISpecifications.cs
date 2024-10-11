@@ -19,7 +19,7 @@ namespace NWEB01.Domain.Interfaces
 		Expression<Func<T, object>> OrderBy { get; }
 
 		// Order By Ascending
-		Expression<Func<T, object>> Ascending { get; }
+		Expression<Func<T, object>> Descending { get; }
 
 		// Take
 		int Take { get; }

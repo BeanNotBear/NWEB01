@@ -33,13 +33,19 @@ namespace NWEB01.Application.Services.UserService
 				(!userSpeParam.Role.HasValue || x.Role == userSpeParam.Role)
 			);
 
+			spec.ApplyPaging(take, skip);
+			if(userSpeParam.IsDescending)
+			{
+				spec.AddOrderBy(x => x.Name);
+			} else
+			{
+				spec.AddDescending(x => x.Name);
+			}
+			
+
 			var userDomains = await userRepository.GetAll(spec);
 
-			var userDTOs = mapper.Map<List<UserDTO>>(userDomains);
-			var totalRecords = await userRepository.CountItems();
-			var totalPage = (int)Math.Ceiling((double)totalRecords / userSpeParam.pageSize);
-
-			var result = new PaginationList<UserDTO>(userDTOs, userSpeParam.pageIndex, totalPage, totalRecords);
+			var result = mapper.Map<PaginationList<UserDTO>>(userDomains);
 			return result;
 		}
 	}

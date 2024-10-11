@@ -25,7 +25,7 @@ namespace NWEB01.Domain.Specifications
 
 		public Expression<Func<T, object>> OrderBy { get; private set; }
 
-		public Expression<Func<T, object>> Ascending { get; private set; }
+		public Expression<Func<T, object>> Descending { get; private set; }
 
 		public int Take { get; private set; }
 
@@ -43,15 +43,16 @@ namespace NWEB01.Domain.Specifications
 			OrderBy = orderByExpression;
 		}
 
-		public void AddAscending(Expression<Func<T, Object>> ascendingExpression)
+		public void AddDescending(Expression<Func<T, Object>> ascendingExpression)
 		{
-			Ascending = ascendingExpression;
+			Descending = ascendingExpression;
 		}
 
 		public void ApplyPaging(int take, int skip)
 		{
 			Take = take;
 			Skip = skip;
+			IsPagingEnable = true;
 		}
 	}
 }
