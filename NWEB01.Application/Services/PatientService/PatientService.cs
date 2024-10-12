@@ -15,11 +15,13 @@ namespace NWEB01.Application.Services.PatientService
 	public class PatientService : IPatientService
 	{
 		private readonly IPatientRepository patientRepository;
+		private readonly IDoctorRepository doctorRepository;
 		private readonly IMapper mapper;
 
-		public PatientService(IPatientRepository patientRepository, IMapper mapper)
+		public PatientService(IPatientRepository patientRepository, IDoctorRepository doctorRepository, IMapper mapper)
 		{
 			this.patientRepository = patientRepository;
+			this.doctorRepository = doctorRepository;
 			this.mapper = mapper;
 		}
 
@@ -45,19 +47,15 @@ namespace NWEB01.Application.Services.PatientService
 				(x.Role == (int)Role.Patient)
 			);
 
-			if (patientSpeParam.IsIncludeAppoitment)
-			{
-				spec.AddInclude(x => x.PatientAppointments);
-			}
-
 			if (!patientSpeParam.IsDescending)
 			{
 				spec.AddOrderBy(x => x.Name);
-			} else
+			}
+			else
 			{
 				spec.AddDescending(x => x.Name);
 			}
-			
+
 			int skip = (patientSpeParam.pageIndex - 1) * patientSpeParam.pageSize;
 			int take = patientSpeParam.pageSize;
 			spec.ApplyPaging(take, skip);
@@ -69,11 +67,16 @@ namespace NWEB01.Application.Services.PatientService
 
 		public async Task<PatientDTO> GetPatientById(Guid id, bool isInclude)
 		{
-			User patient;
-			if(isInclude)
+			User? patient;
+			if (isInclude)
 			{
 				patient = await patientRepository.GetById(id, x => x.PatientAppointments);
-			} else
+				if (patient != null)
+				{
+					await JoinDoctor(patient);
+				}
+			}
+			else
 			{
 				patient = await patientRepository.GetById(id, null);
 			}
@@ -88,6 +91,17 @@ namespace NWEB01.Application.Services.PatientService
 			var updatedPatient = await patientRepository.Update(id, patientDomain);
 			var patientDTO = mapper.Map<PatientDTO>(updatedPatient);
 			return patientDTO;
+		}
+
+		private async Task JoinDoctor(User patient)
+		{
+			if (patient.PatientAppointments != null)
+			{
+				foreach (var appointment in patient.PatientAppointments)
+				{
+					appointment.Doctor = await doctorRepository.GetById(appointment.DoctorId, null);
+				}
+			}
 		}
 	}
 }

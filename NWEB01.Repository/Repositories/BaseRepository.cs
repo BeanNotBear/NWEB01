@@ -44,15 +44,6 @@ namespace NWEB01.Repository.Repositories
 				entities = entities.Where(spec.Criterias);
 			}
 
-			// Include
-			if (spec.Includes != null)
-			{
-				foreach (var item in spec.Includes)
-				{
-					entities = entities.Include(item);
-				}
-			}
-
 			// Sort by
 			if (spec.OrderBy != null)
 			{

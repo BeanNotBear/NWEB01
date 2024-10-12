@@ -5,17 +5,20 @@ using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
 using NWEB01.Domain.Specifications.DoctorSpecification;
 using ShareKernel.CoreService;
+using System.Net.NetworkInformation;
 
 namespace NWEB01.Application.Services.UserService
 {
 	public class DoctorService : IDoctorService
 	{
 		private readonly IDoctorRepository doctorRepository;
+		private readonly IPatientRepository patientRepository;
 		private readonly IMapper mapper;
 
-		public DoctorService(IDoctorRepository doctorRepository, IMapper mapper)
+		public DoctorService(IDoctorRepository doctorRepository, IPatientRepository patientRepository, IMapper mapper)
 		{
 			this.doctorRepository = doctorRepository;
+			this.patientRepository = patientRepository;
 			this.mapper = mapper;
 		}
 
@@ -41,6 +44,10 @@ namespace NWEB01.Application.Services.UserService
 			{
 				// Include related DoctorAppointments
 				doctorDomain = await doctorRepository.GetById(id, d => d.DoctorAppointments);
+				if(doctorDomain != null)
+				{
+					await JoinPatient(doctorDomain);
+				}
 			}
 			else
 			{
@@ -73,12 +80,8 @@ namespace NWEB01.Application.Services.UserService
 				spec.AddDescending(x => x.Name);
 			}
 
-			if (doctorSpeParam.IsIncludeAppoitment)
-			{
-				spec.AddInclude(x => x.DoctorAppointments);
-			}
-
 			var doctorDomain = await doctorRepository.GetAll(spec);
+
 			var result = mapper.Map<PaginationList<DoctorDTO>>(doctorDomain);
 
 			return result;
@@ -91,6 +94,17 @@ namespace NWEB01.Application.Services.UserService
 			var updatedDoctor = await doctorRepository.Update(id, doctorDomain);
 			var doctorDTO = mapper.Map<DoctorDTO>(updatedDoctor);
 			return doctorDTO;
+		}
+
+		private async Task JoinPatient(User user)
+		{
+			if (user.DoctorAppointments != null)
+			{
+				foreach (var appointment in user.DoctorAppointments)
+				{
+					appointment.Patient = await patientRepository.GetById(appointment.PatientId, null);
+				}
+			}
 		}
 	}
 }

@@ -9,6 +9,6 @@ namespace NWEB01.Application.DTOs
 		public string Email { get; set; }
 		public DateTime? DateOfBirth { get; set; }
 		public string Specialization { get; set; }
-		public List<AppointmentDTO> DoctorAppointments { get; set; }
+		public List<DoctorAppointmentDTO> DoctorAppointments { get; set; }
 	}
 }

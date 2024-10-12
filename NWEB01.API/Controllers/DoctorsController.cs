@@ -27,9 +27,9 @@ namespace NWEB01.API.Controllers
 
 		[HttpGet]
 		[Route("{id:guid}")]
-		public async Task<IActionResult> GetById([FromRoute] Guid id, [FromQuery] bool isInclude = false)
+		public async Task<IActionResult> GetById([FromRoute] Guid id, [FromQuery] bool isIncludeAppointment = false)
 		{
-			var doctor = await doctorService.GetDoctorById(id, isInclude);
+			var doctor = await doctorService.GetDoctorById(id, isIncludeAppointment);
 			if(doctor == null)
 			{
 				return NotFound();

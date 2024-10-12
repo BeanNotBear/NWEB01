@@ -16,7 +16,16 @@ namespace NWEB01.Application.Mapping
 		public ProfilesMapping()
 		{
 			CreateMap<User, DoctorDTO>().ReverseMap();
-			CreateMap<Appointment, AppointmentDTO>().ForMember(dest => dest.Status, opt => opt.MapFrom(src => ((Status)src.Status).ToString())).ReverseMap();
+			CreateMap<Appointment, DoctorAppointmentDTO>()
+				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => ((Status)src.Status).ToString()))
+				.ForMember(dest => dest.PatientID, opt => opt.MapFrom(src => src.PatientId))
+				.ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Patient.Name))
+				.ReverseMap();
+			CreateMap<Appointment, PatientAppointmentDTO>()
+				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => ((Status)src.Status).ToString()))
+				.ForMember(dest => dest.DoctorID, opt => opt.MapFrom(src => src.DoctorId))
+				.ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.Doctor.Name))
+				.ReverseMap();
 			CreateMap<PaginationList<User>, PaginationList<DoctorDTO>>().ReverseMap();
 			CreateMap<User, AddDoctorRequest>().ReverseMap();
 			CreateMap<User, UpdateDoctorRequest>().ReverseMap();
