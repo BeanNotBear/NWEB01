@@ -22,5 +22,13 @@ namespace NWEB01.API.Controllers
 			var result = await appointmentsService.GetAll(appointmentSpeParam);
 			return Ok(result);
 		}
+
+		[HttpGet]
+		[Route("{id:guid}")]
+		public async Task<IActionResult> GetById([FromRoute] Guid id, [FromQuery] bool isIncludeDetail)
+		{
+			var result = await appointmentsService.GetById(id, isIncludeDetail);
+			return Ok(result);
+		}
 	}
 }

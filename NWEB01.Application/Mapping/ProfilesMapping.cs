@@ -37,7 +37,9 @@ namespace NWEB01.Application.Mapping
 			CreateMap<Appointment, UpdateAppointmentRequest>().ReverseMap();
 			CreateMap<Appointment, AppointmentDTO>().ReverseMap();        
 			CreateMap<PaginationList<Appointment>, PaginationList<AppointmentDTO>>().ReverseMap();
-			CreateMap<Appointment, AppointmentDetailDTO>().ReverseMap();
+			CreateMap<Appointment, AppointmentDetailDTO>()
+				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => ((Status)src.Status).ToString()))
+				.ReverseMap();
 		}
 	}
 }
