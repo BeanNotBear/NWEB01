@@ -33,6 +33,11 @@ namespace NWEB01.Application.Mapping
 			CreateMap<User, UpdatePatientRequest>().ReverseMap();
 			CreateMap<User, PatientDTO>().ReverseMap();
 			CreateMap<PaginationList<User>, PaginationList<PatientDTO>>().ReverseMap();
+			CreateMap<Appointment, AddAppointmentRequest>().ReverseMap();
+			CreateMap<Appointment, UpdateAppointmentRequest>().ReverseMap();
+			CreateMap<Appointment, AppointmentDTO>().ReverseMap();        
+			CreateMap<PaginationList<Appointment>, PaginationList<AppointmentDTO>>().ReverseMap();
+			CreateMap<Appointment, AppointmentDetailDTO>().ReverseMap();
 		}
 	}
 }

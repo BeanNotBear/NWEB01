@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NWEB01.Application.Mapping;
+using NWEB01.Application.Services.AppointmentService;
 using NWEB01.Application.Services.PatientService;
 using NWEB01.Application.Services.UserService;
 using NWEB01.Domain.Interfaces;
@@ -28,6 +29,9 @@ builder.Services.AddTransient<IDoctorService, DoctorService>();
 
 builder.Services.AddTransient<IPatientRepository, PatientRepository>();
 builder.Services.AddTransient<IPatientService, PatientService>();
+
+builder.Services.AddTransient<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddTransient<IAppointmentService, AppointmentService>();
 
 var app = builder.Build();
 

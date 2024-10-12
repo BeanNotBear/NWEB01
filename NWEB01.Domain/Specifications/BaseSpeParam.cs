@@ -17,11 +17,6 @@ namespace NWEB01.Domain.Specifications
 			set => _pageSize = (value > MaxPageSize) ? MaxPageSize : value;
 		}
 		public bool IsDescending { get; set; } = false;
-		private string? _search;
-		public string? Search
-		{
-			get => _search;
-			set => _search = value;
-		}
+		
 	}
 }

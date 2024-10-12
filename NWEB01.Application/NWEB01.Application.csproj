@@ -15,8 +15,4 @@
     <ProjectReference Include="..\ShareKernel\ShareKernel.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\AppointmentService\" />
-  </ItemGroup>
-
 </Project>
