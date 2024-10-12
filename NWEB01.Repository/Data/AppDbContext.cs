@@ -45,12 +45,12 @@ namespace NWEB01.Repository.Data
 				x.HasMany(x => x.PatientAppointments)
 					.WithOne(x => x.Patient)
 					.HasForeignKey(x => x.PatientId)
-					.OnDelete(DeleteBehavior.Cascade);
+					.OnDelete(DeleteBehavior.NoAction);
 
 				x.HasMany(x => x.DoctorAppointments)
 					.WithOne(x => x.Doctor)
 					.HasForeignKey(x => x.DoctorId)
-					.OnDelete(DeleteBehavior.Cascade);
+					.OnDelete(DeleteBehavior.NoAction);
 
 				x.Property(x => x.DateOfBirth).HasColumnType("Date").IsRequired(false);
 			});
