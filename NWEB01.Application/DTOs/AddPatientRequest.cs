@@ -10,7 +10,7 @@ namespace NWEB01.Application.DTOs
 	{
 		public string Name { get; set; }
 		public string Email { get; set; }
-		public DateTime? DateOfBirth { get; set; }
+		public DateOnly? DateOfBirth { get; set; }
 		public string Password { get; set; }
 	}
 }

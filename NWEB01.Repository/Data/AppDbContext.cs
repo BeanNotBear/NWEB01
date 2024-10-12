@@ -23,12 +23,24 @@ namespace NWEB01.Repository.Data
 			{
 				x.ToTable("appointments");
 				x.HasKey(x => x.Id);
+
+				x.Property(x => x.PatientId).IsRequired(true);
+				x.Property(x => x.DoctorId).IsRequired(true);
+				x.Property(x => x.Date).HasColumnType("datetime").HasDefaultValue(DateTime.Now);
+				x.Property(x => x.Status).HasColumnType("int").IsRequired(true);
 			});
 
 			modelBuilder.Entity<User>(x =>
 			{
 				x.ToTable("users");
 				x.HasKey(x => x.Id);
+
+				x.Property(x => x.Name).HasColumnType("nvarchar").HasMaxLength(255).IsRequired(true);
+				x.Property(x => x.Email).HasColumnType("varchar").HasMaxLength(255).IsRequired(true);
+				x.Property(x => x.DateOfBirth).HasColumnType("date").IsRequired(false);
+				x.Property(x => x.Password).HasColumnType("varchar").HasMaxLength(255).IsRequired(true);
+				x.Property(x => x.Role).HasColumnType("int").IsRequired(true);
+				x.Property(x => x.Specialization).HasColumnType("nvarchar").HasMaxLength(255).IsRequired();
 
 				x.HasMany(x => x.PatientAppointments)
 					.WithOne(x => x.Patient)
