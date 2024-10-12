@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using NWEB01.Application.DTOs;
 using NWEB01.Application.Services.PatientService;
-using NWEB01.Domain.Specifications.PatientSpecification;
+using NWEB01.Domain.Specifications;
 
 namespace NWEB01.API.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class PatientsController : ControllerBase
 	{
@@ -26,7 +26,7 @@ namespace NWEB01.API.Controllers
 
 		[HttpGet]
 		[Route("{id:guid}")]
-		public async Task<IActionResult> GetById([FromRoute] Guid id, [FromQuery] bool isIncludeAppoiment)
+		public async Task<IActionResult> GetById([FromRoute] Guid id, [FromQuery] bool isIncludeAppoiment = false)
 		{
 			var result = await patientService.GetPatientById(id, isIncludeAppoiment);
 			if (result == null)

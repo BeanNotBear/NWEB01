@@ -73,12 +73,15 @@ namespace NWEB01.Repository.Repositories
 			return result;
 		}
 
-		public async Task<T?> GetById(P id, Expression<Func<T, object>> include)
+		public async Task<T?> GetById(P id, ISpecifications<T> spec)
 		{
 			var entities = dbContext.Set<T>().AsQueryable();
-			if (include != null)
+			if (spec.Includes != null && spec.Includes.Count > 0)
 			{
-				entities = entities.Include(include);
+				foreach (var item in spec.Includes)
+				{
+					entities = entities.Include(item);
+				}
 			}
 			var entity = await entities.FirstOrDefaultAsync(x => EF.Property<P>(x, "Id").Equals(id));
 			return entity;

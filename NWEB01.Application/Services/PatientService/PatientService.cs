@@ -3,7 +3,6 @@ using NWEB01.Application.DTOs;
 using NWEB01.Domain.Entities;
 using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
-using NWEB01.Domain.Specifications.PatientSpecification;
 using ShareKernel.CoreService;
 using ShareKernel.Enum;
 using System;
@@ -12,7 +11,7 @@ using System.Text;
 
 namespace NWEB01.Application.Services.PatientService
 {
-	public class PatientService : IPatientService
+    public class PatientService : IPatientService
 	{
 		private readonly IPatientRepository patientRepository;
 		private readonly IDoctorRepository doctorRepository;
@@ -68,9 +67,11 @@ namespace NWEB01.Application.Services.PatientService
 		public async Task<PatientDTO> GetPatientById(Guid id, bool isInclude)
 		{
 			User? patient;
+			var spec = new BaseSpecification<User>(x => x.Role == (int)Role.Patient);
 			if (isInclude)
 			{
-				patient = await patientRepository.GetById(id, x => x.PatientAppointments);
+				spec.AddInclude(x => x.PatientAppointments);
+				patient = await patientRepository.GetById(id, spec);
 				if (patient != null)
 				{
 					await JoinDoctor(patient);
@@ -78,7 +79,7 @@ namespace NWEB01.Application.Services.PatientService
 			}
 			else
 			{
-				patient = await patientRepository.GetById(id, null);
+				patient = await patientRepository.GetById(id, spec);
 			}
 			var result = mapper.Map<PatientDTO>(patient);
 			return result;
@@ -97,9 +98,10 @@ namespace NWEB01.Application.Services.PatientService
 		{
 			if (patient.PatientAppointments != null)
 			{
+				var spec = new BaseSpecification<User>(x => x.Role == (int)Role.Doctor);
 				foreach (var appointment in patient.PatientAppointments)
 				{
-					appointment.Doctor = await doctorRepository.GetById(appointment.DoctorId, null);
+					appointment.Doctor = await doctorRepository.GetById(appointment.DoctorId, spec);
 				}
 			}
 		}

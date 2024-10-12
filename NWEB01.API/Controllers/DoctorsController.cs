@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using NWEB01.Application.DTOs;
 using NWEB01.Application.Services.UserService;
-using NWEB01.Domain.Specifications.DoctorSpecification;
+using NWEB01.Domain.Specifications;
 
 namespace NWEB01.API.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class DoctorsController : ControllerBase
 	{
