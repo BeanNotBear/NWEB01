@@ -54,8 +54,8 @@ namespace NWEB01.Application.Services.UserService
 				// Get the doctor without related appointments
 				doctorDomain = await doctorRepository.GetById(id, spec);
 			}
-			var doctorDTO = mapper.Map<DoctorDTO>(doctorDomain);
-			return doctorDTO;
+			var doctorDto = mapper.Map<DoctorDTO>(doctorDomain);
+			return doctorDto;
 		}
 
 		public async Task<PaginationList<DoctorDTO>> GetDoctors(DoctorSpeParam doctorSpeParam)
@@ -63,12 +63,12 @@ namespace NWEB01.Application.Services.UserService
 			var spec = new BaseSpecification<User>(x =>
 				(string.IsNullOrEmpty(doctorSpeParam.Search) || x.Name.Contains(doctorSpeParam.Search.EncodingUTF8())) &&
 				(x.Role == 0) &&
-				(!(doctorSpeParam.Specialization != null) || x.Specialization == doctorSpeParam.Specialization)
+				(doctorSpeParam.Specialization == null || x.Specialization == doctorSpeParam.Specialization)
 
 			);
 
-			int skip = (doctorSpeParam.pageIndex - 1) * doctorSpeParam.pageSize;
-			int take = doctorSpeParam.pageSize;
+			var skip = (doctorSpeParam.pageIndex - 1) * doctorSpeParam.pageSize;
+			var take = doctorSpeParam.pageSize;
 
 			spec.ApplyPaging(take, skip);
 			if (!doctorSpeParam.IsDescending)
@@ -92,8 +92,8 @@ namespace NWEB01.Application.Services.UserService
 			var doctorDomain = mapper.Map<User>(updateDoctorRequest);
 			doctorDomain.Id = id;
 			var updatedDoctor = await doctorRepository.Update(id, doctorDomain);
-			var doctorDTO = mapper.Map<DoctorDTO>(updatedDoctor);
-			return doctorDTO;
+			var doctorDto = mapper.Map<DoctorDTO>(updatedDoctor);
+			return doctorDto;
 		}
 
 		private async Task JoinPatient(User user)

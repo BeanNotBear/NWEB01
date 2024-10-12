@@ -4,11 +4,6 @@ using NWEB01.Domain.Entities;
 using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
 using ShareKernel.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NWEB01.Application.Services.AppointmentService
 {
@@ -37,10 +32,18 @@ namespace NWEB01.Application.Services.AppointmentService
 			return isDeleted;
 		}
 
-		public async Task<PaginationList<AppointmentDTO>> GetAll(AppointmentSpeParam appointmentSpeParam)
+		public async Task<AppointmentDTO?> CancelAppointment(Guid id)
+		{
+			var appointmentDomain = await appointmentRepository.CancelAppointment(id);
+			var appointmentDto = mapper.Map<AppointmentDTO>(appointmentDomain);
+			return appointmentDto;
+		}
+
+		public async Task<PaginationList<AppointmentDTO>> GetAppointmentsByDoctorId(Guid doctorId, AppointmentSpeParam appointmentSpeParam)
 		{
 			var spec = new BaseSpecification<Appointment>(x =>
-				(appointmentSpeParam.Statuses == null || (appointmentSpeParam.Statuses.Contains((Status)x.Status))) &&
+				x.DoctorId == doctorId &&
+				appointmentSpeParam.Statuses.Contains((Status)x.Status) &&
 				(appointmentSpeParam.FromDate == DateTime.MinValue || x.Date >= appointmentSpeParam.FromDate) &&
 				(appointmentSpeParam.ToDate == DateTime.MaxValue || x.Date <= appointmentSpeParam.ToDate)
 			);
@@ -48,7 +51,33 @@ namespace NWEB01.Application.Services.AppointmentService
 			if (!appointmentSpeParam.IsDescending)
 			{
 				spec.AddOrderBy(x => x.Date);
-			} else
+			}
+			else
+			{
+				spec.AddDescending(x => x.Date);
+			}
+
+			var skip = (appointmentSpeParam.pageIndex - 1) * appointmentSpeParam.pageSize;
+			var take = appointmentSpeParam.pageSize;
+			spec.ApplyPaging(take, skip);
+			var appointmentDomains = await appointmentRepository.GetAll(spec);
+			var result = mapper.Map<PaginationList<AppointmentDTO>>(appointmentDomains);
+			return result;
+		}
+
+		public async Task<PaginationList<AppointmentDTO>> GetAll(AppointmentSpeParam appointmentSpeParam)
+		{
+			var spec = new BaseSpecification<Appointment>(x =>
+				(appointmentSpeParam.Statuses.Contains((Status)x.Status)) &&
+				(appointmentSpeParam.FromDate == DateTime.MinValue || x.Date >= appointmentSpeParam.FromDate) &&
+				(appointmentSpeParam.ToDate == DateTime.MaxValue || x.Date <= appointmentSpeParam.ToDate)
+			);
+
+			if (!appointmentSpeParam.IsDescending)
+			{
+				spec.AddOrderBy(x => x.Date);
+			}
+			else
 			{
 				spec.AddDescending(x => x.Date);
 			}
@@ -67,8 +96,6 @@ namespace NWEB01.Application.Services.AppointmentService
 
 		public async Task<AppointmentDetailDTO> GetById(Guid id, bool isInclude)
 		{
-			Appointment? appointment;
-
 			var spec = new BaseSpecification<Appointment>();
 			if (isInclude)
 			{
@@ -76,21 +103,18 @@ namespace NWEB01.Application.Services.AppointmentService
 				spec.AddInclude(x => x.Doctor);
 			}
 
-			if(isInclude)
-			{
-				appointment = await appointmentRepository.GetById(id, spec);
-			} else
-			{
-				appointment = await appointmentRepository.GetById(id, spec);
-			}
 			var appoitmentDomain = await appointmentRepository.GetById(id, spec);
 			var result = mapper.Map<AppointmentDetailDTO>(appoitmentDomain);
 			return result;
 		}
 
-		public Task<AppointmentDetailDTO> UpdateAppointment(Guid id, UpdateAppointmentRequest updateAppointmentRequest)
+		public async Task<AppointmentDTO> UpdateAppointment(Guid id, UpdateAppointmentRequest updateAppointmentRequest)
 		{
-			throw new NotImplementedException();
+			var appointmentDomain = mapper.Map<Appointment>(updateAppointmentRequest);
+			appointmentDomain.Id = id;
+			var existedAppointment = await appointmentRepository.Update(id, appointmentDomain);
+			var appointmentDto = mapper.Map<AppointmentDTO>(existedAppointment);
+			return appointmentDto;
 		}
 	}
 }

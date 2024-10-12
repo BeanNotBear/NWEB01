@@ -9,5 +9,6 @@ namespace NWEB01.Domain.Interfaces
 {
     public interface IAppointmentRepository : IBaseRepository<Appointment, Guid>
     {
+        public Task<Appointment?> CancelAppointment(Guid id);
     }
 }

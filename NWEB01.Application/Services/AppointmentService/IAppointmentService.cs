@@ -13,7 +13,9 @@ namespace NWEB01.Application.Services.AppointmentService
 		public Task<PaginationList<AppointmentDTO>> GetAll(AppointmentSpeParam appointmentSpeParam);
 		public Task<AppointmentDetailDTO> GetById(Guid id, bool isInclude);
 		public Task<AppointmentDTO> AddAppointment(AddAppointmentRequest addAppointmentRequest);
-		public Task<AppointmentDetailDTO> UpdateAppointment(Guid id, UpdateAppointmentRequest updateAppointmentRequest);
+		public Task<AppointmentDTO> UpdateAppointment(Guid id, UpdateAppointmentRequest updateAppointmentRequest);
 		public Task<bool> DeleteAppointment(Guid id);
-    }
+		public Task<AppointmentDTO?> CancelAppointment(Guid id);
+		public Task<PaginationList<AppointmentDTO>> GetAppointmentsByDoctorId(Guid doctorId, AppointmentSpeParam appointmentSpeParam);
+	}
 }
