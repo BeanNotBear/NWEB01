@@ -20,6 +20,10 @@ namespace NWEB01.Application.Mapping
 			CreateMap<PaginationList<User>, PaginationList<DoctorDTO>>().ReverseMap();
 			CreateMap<User, AddDoctorRequest>().ReverseMap();
 			CreateMap<User, UpdateDoctorRequest>().ReverseMap();
+			CreateMap<User, AddPatientRequest>().ReverseMap();
+			CreateMap<User, UpdatePatientRequest>().ReverseMap();
+			CreateMap<User, PatientDTO>().ReverseMap();
+			CreateMap<PaginationList<User>, PaginationList<PatientDTO>>().ReverseMap();
 		}
 	}
 }

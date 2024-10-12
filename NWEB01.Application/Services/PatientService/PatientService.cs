@@ -1,34 +1,80 @@
-﻿using NWEB01.Application.DTOs;
+﻿using AutoMapper;
+using NWEB01.Application.DTOs;
+using NWEB01.Domain.Entities;
+using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
-using NWEB01.Domain.Specifications.DoctorSpecification;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NWEB01.Domain.Specifications.PatientSpecification;
+using ShareKernel.Enum;
+
 
 namespace NWEB01.Application.Services.PatientService
 {
 	public class PatientService : IPatientService
 	{
-		public Task<PatientDTO> AddPatient(AddPatientRequest addPatientRequest)
+		private readonly IPatientRepository patientRepository;
+		private readonly IMapper mapper;
+
+		public PatientService(IPatientRepository patientRepository, IMapper mapper)
 		{
-			throw new NotImplementedException();
+			this.patientRepository = patientRepository;
+			this.mapper = mapper;
 		}
 
-		public Task<bool> DeletePatient(Guid id)
+		public async Task<PatientDTO> AddPatient(AddPatientRequest addPatientRequest)
 		{
-			throw new NotImplementedException();
+			var patientDomain = mapper.Map<User>(addPatientRequest);
+			var createdPatient = await patientRepository.Add(patientDomain);
+			var patientDTO = mapper.Map<PatientDTO>(createdPatient);
+			return patientDTO;
 		}
 
-		public Task<PaginationList<PatientDTO>> GetPatient(DoctorSpeParam doctorSpeParam)
+		public async Task<bool> DeletePatient(Guid id)
 		{
-			throw new NotImplementedException();
+			var isDeleted = await patientRepository.Delete(id);
+			return isDeleted;
 		}
 
-		public Task<PatientDTO> GetPatientById(Guid id, bool isInclude)
+		public async Task<PaginationList<PatientDTO>> GetPatients(PatientSpeParam patientSpeParam)
 		{
-			throw new NotImplementedException();
+			var spec = new BaseSpecification<User>(x =>
+				(string.IsNullOrWhiteSpace(patientSpeParam.Search) || x.Name.Contains(patientSpeParam.Search)) &&
+				(x.Role == (int)Role.Patient)
+			);
+
+			if (patientSpeParam.IsIncludeAppoitment)
+			{
+				spec.AddInclude(x => x.PatientAppointments);
+			}
+
+			if (!patientSpeParam.IsDescending)
+			{
+				spec.AddOrderBy(x => x.Name);
+			} else
+			{
+				spec.AddDescending(x => x.Name);
+			}
+			
+			int skip = (patientSpeParam.pageIndex - 1) * patientSpeParam.pageSize;
+			int take = patientSpeParam.pageSize;
+			spec.ApplyPaging(take, skip);
+
+			var patientDomains = await patientRepository.GetAll(spec);
+			var result = mapper.Map<PaginationList<PatientDTO>>(patientDomains);
+			return result;
+		}
+
+		public async Task<PatientDTO> GetPatientById(Guid id, bool isInclude)
+		{
+			User patient;
+			if(isInclude)
+			{
+				patient = await patientRepository.GetById(id, x => x.PatientAppointments);
+			} else
+			{
+				patient = await patientRepository.GetById(id, null);
+			}
+			var result = mapper.Map<PatientDTO>(patient);
+			return result;
 		}
 
 		public Task<PatientDTO> UpdatePatient(Guid id, UpdatePatientRequest updatePatientRequest)

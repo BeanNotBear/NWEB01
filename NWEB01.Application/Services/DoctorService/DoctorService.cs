@@ -63,7 +63,7 @@ namespace NWEB01.Application.Services.UserService
 			int take = doctorSpeParam.pageSize;
 
 			spec.ApplyPaging(take, skip);
-			if (doctorSpeParam.IsDescending)
+			if (!doctorSpeParam.IsDescending)
 			{
 				spec.AddOrderBy(x => x.Name);
 			}

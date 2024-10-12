@@ -18,7 +18,7 @@ namespace NWEB01.Domain.Specifications
 		}
 		public bool IsDescending { get; set; } = false;
 		public bool IsIncludeAppoitment { get; set; } = false;
-		public string? _search;
+		private string? _search;
 		public string? Search
 		{
 			get => _search;
