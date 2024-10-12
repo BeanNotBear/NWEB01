@@ -4,6 +4,7 @@ using NWEB01.Domain.Entities;
 using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
 using NWEB01.Domain.Specifications.DoctorSpecification;
+using ShareKernel.CoreService;
 
 namespace NWEB01.Application.Services.UserService
 {
@@ -53,7 +54,7 @@ namespace NWEB01.Application.Services.UserService
 		public async Task<PaginationList<DoctorDTO>> GetDoctors(DoctorSpeParam doctorSpeParam)
 		{
 			var spec = new BaseSpecification<User>(x =>
-				(string.IsNullOrEmpty(doctorSpeParam.Search) || x.Name.Contains(doctorSpeParam.Search)) &&
+				(string.IsNullOrEmpty(doctorSpeParam.Search) || x.Name.Contains(doctorSpeParam.Search.EncodingUTF8())) &&
 				(x.Role == 0) &&
 				(!(doctorSpeParam.Specialization != null) || x.Specialization == doctorSpeParam.Specialization)
 

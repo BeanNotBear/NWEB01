@@ -46,5 +46,29 @@ namespace NWEB01.API.Controllers
 			}
 			return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
 		}
+
+		[HttpPut]
+		[Route("{id:guid}")]
+		public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdatePatientRequest updatePatientRequest)
+		{
+			var result = await patientService.UpdatePatient(id, updatePatientRequest);
+			if (result == null)
+			{
+				return NotFound();
+			}
+			return Ok(result);
+		}
+
+		[HttpDelete]
+		[Route("{id:guid}")]
+		public async Task<IActionResult> Delete(Guid id)
+		{
+			var isDeleted = await patientService.DeletePatient(id);
+			if (isDeleted)
+			{
+				return NotFound();
+			}
+			return NoContent();
+		}
 	}
 }

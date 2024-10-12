@@ -4,7 +4,10 @@ using NWEB01.Domain.Entities;
 using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
 using NWEB01.Domain.Specifications.PatientSpecification;
+using ShareKernel.CoreService;
 using ShareKernel.Enum;
+using System;
+using System.Text;
 
 
 namespace NWEB01.Application.Services.PatientService
@@ -23,6 +26,7 @@ namespace NWEB01.Application.Services.PatientService
 		public async Task<PatientDTO> AddPatient(AddPatientRequest addPatientRequest)
 		{
 			var patientDomain = mapper.Map<User>(addPatientRequest);
+			patientDomain.Role = (int)Role.Patient;
 			var createdPatient = await patientRepository.Add(patientDomain);
 			var patientDTO = mapper.Map<PatientDTO>(createdPatient);
 			return patientDTO;
@@ -37,7 +41,7 @@ namespace NWEB01.Application.Services.PatientService
 		public async Task<PaginationList<PatientDTO>> GetPatients(PatientSpeParam patientSpeParam)
 		{
 			var spec = new BaseSpecification<User>(x =>
-				(string.IsNullOrWhiteSpace(patientSpeParam.Search) || x.Name.Contains(patientSpeParam.Search)) &&
+				(string.IsNullOrWhiteSpace(patientSpeParam.Search) || x.Name.Contains(patientSpeParam.Search.EncodingUTF8())) &&
 				(x.Role == (int)Role.Patient)
 			);
 
@@ -77,9 +81,13 @@ namespace NWEB01.Application.Services.PatientService
 			return result;
 		}
 
-		public Task<PatientDTO> UpdatePatient(Guid id, UpdatePatientRequest updatePatientRequest)
+		public async Task<PatientDTO> UpdatePatient(Guid id, UpdatePatientRequest updatePatientRequest)
 		{
-			throw new NotImplementedException();
+			var patientDomain = mapper.Map<User>(updatePatientRequest);
+			patientDomain.Id = id;
+			var updatedPatient = await patientRepository.Update(id, patientDomain);
+			var patientDTO = mapper.Map<PatientDTO>(updatedPatient);
+			return patientDTO;
 		}
 	}
 }
