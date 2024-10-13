@@ -1,11 +1,12 @@
-﻿namespace NWEB01.Application.DTOs
+﻿namespace NWEB01.Domain.DTOs
 {
-	public class UpdateDoctorRequest
+	public class PatientDTO
 	{
+		public Guid Id { get; set; }
 		public string Name { get; set; }
 		public string Email { get; set; }
 		public DateTime? DateOfBirth { get; set; }
-		public string Password { get; set; }
 		public string Specialization { get; set; }
+		public List<PatientAppointmentDTO> PatientAppointments { get; set; }
 	}
 }

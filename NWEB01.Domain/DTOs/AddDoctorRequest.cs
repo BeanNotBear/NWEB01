@@ -1,6 +1,6 @@
 ﻿using UserRole = ShareKernel.Enum.Role;
 
-namespace NWEB01.Application.DTOs
+namespace NWEB01.Domain.DTOs
 {
 	public class AddDoctorRequest
 	{

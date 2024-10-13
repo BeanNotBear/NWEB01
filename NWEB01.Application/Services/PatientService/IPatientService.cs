@@ -1,4 +1,4 @@
-﻿using NWEB01.Application.DTOs;
+﻿using NWEB01.Domain.DTOs;
 using NWEB01.Domain.Specifications;
 
 

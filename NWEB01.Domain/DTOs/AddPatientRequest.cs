@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NWEB01.Application.DTOs
+﻿namespace NWEB01.Domain.DTOs
 {
-	public class UpdatePatientRequest
+	public class AddPatientRequest
 	{
 		public string Name { get; set; }
 		public string Email { get; set; }
