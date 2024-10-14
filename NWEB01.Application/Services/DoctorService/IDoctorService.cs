@@ -1,7 +1,7 @@
-﻿using NWEB01.Domain.DTOs;
+﻿using NWEB01.Application.DTOs;
 using NWEB01.Domain.Specifications;
 
-namespace NWEB01.Application.Services.UserService
+namespace NWEB01.Application.Services.DoctorService
 {
     public interface IDoctorService
     {

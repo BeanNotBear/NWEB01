@@ -6,7 +6,7 @@ using ShareKernel.CoreService;
 using ShareKernel.Enum;
 using System;
 using System.Text;
-using NWEB01.Domain.DTOs;
+using NWEB01.Application.DTOs;
 
 
 namespace NWEB01.Application.Services.PatientService
@@ -107,3 +107,4 @@ namespace NWEB01.Application.Services.PatientService
 		}
 	}
 }
+

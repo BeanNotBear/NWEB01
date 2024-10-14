@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NWEB01.Application.Services.UserService;
-using NWEB01.Domain.DTOs;
+using NWEB01.Application.DTOs;
+using NWEB01.Application.Services.DoctorService;
 using NWEB01.Domain.Specifications;
 
 namespace NWEB01.API.Controllers

@@ -1,8 +1,6 @@
-﻿using UserRole = ShareKernel.Enum.Role;
-
-namespace NWEB01.Domain.DTOs
+﻿namespace NWEB01.Application.DTOs
 {
-	public class AddDoctorRequest
+	public class UpdatePatientRequest
 	{
 		public string Name { get; set; }
 		public string Email { get; set; }

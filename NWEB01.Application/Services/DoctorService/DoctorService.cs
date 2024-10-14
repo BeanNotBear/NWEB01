@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using NWEB01.Domain.DTOs;
+using NWEB01.Application.DTOs;
 using NWEB01.Domain.Entities;
 using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
 using ShareKernel.CoreService;
 using ShareKernel.Enum;
 
-namespace NWEB01.Application.Services.UserService
+namespace NWEB01.Application.Services.DoctorService
 {
     public class DoctorService : IDoctorService
 	{

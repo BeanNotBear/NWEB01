@@ -1,4 +1,4 @@
-﻿namespace NWEB01.Domain.DTOs
+﻿namespace NWEB01.Application.DTOs
 {
 	public class DoctorAppointmentDTO
 	{

@@ -1,6 +1,6 @@
-﻿namespace NWEB01.Domain.DTOs
+﻿namespace NWEB01.Application.DTOs
 {
-	public class UpdateAppointmentRequest
+	public class AddAppointmentRequest
 	{
 		public Guid PatientId { get; set; }
 		public Guid DoctorId { get; set; }

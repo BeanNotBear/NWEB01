@@ -1,6 +1,6 @@
-﻿namespace NWEB01.Domain.DTOs
+﻿namespace NWEB01.Application.DTOs
 {
-	public class UpdatePatientRequest
+	public class UpdateDoctorRequest
 	{
 		public string Name { get; set; }
 		public string Email { get; set; }

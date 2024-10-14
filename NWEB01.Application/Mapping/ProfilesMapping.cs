@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using NWEB01.Application.DTOs;
 using NWEB01.Domain.Entities;
 using NWEB01.Domain.Specifications;
 using ShareKernel.Enum;
-using NWEB01.Domain.DTOs;
 
 namespace NWEB01.Application.Mapping
 {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NWEB01.Domain.DTOs;
+using NWEB01.Application.DTOs;
 
 namespace NWEB01.Application.Services.AppointmentService
 {
