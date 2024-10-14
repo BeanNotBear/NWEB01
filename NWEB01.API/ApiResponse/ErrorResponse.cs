@@ -6,11 +6,9 @@
 		public string Error { get; private set; } = string.Empty;
 		public List<string> Details { get; } = new List<string>();
 
-		
-
 		public void AddError(string error)
 		{
-			this.Error  = error;
+			this.Error = error;
 		}
 
 		public void AddDetailsError(string detail)

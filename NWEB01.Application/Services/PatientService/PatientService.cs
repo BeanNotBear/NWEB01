@@ -7,11 +7,12 @@ using ShareKernel.Enum;
 using System;
 using System.Text;
 using NWEB01.Application.DTOs;
+using NWEB01.Application.Exceptions;
 
 
 namespace NWEB01.Application.Services.PatientService
 {
-    public class PatientService : IPatientService
+	public class PatientService : IPatientService
 	{
 		private readonly IPatientRepository patientRepository;
 		private readonly IDoctorRepository doctorRepository;
@@ -29,13 +30,21 @@ namespace NWEB01.Application.Services.PatientService
 			var patientDomain = mapper.Map<User>(addPatientRequest);
 			patientDomain.Role = (int)Role.Patient;
 			var createdPatient = await patientRepository.Add(patientDomain);
-			var patientDTO = mapper.Map<PatientDTO>(createdPatient);
-			return patientDTO;
+			if (createdPatient == null)
+			{
+				throw new Exception();
+			}
+			var patientDto = mapper.Map<PatientDTO>(createdPatient);
+			return patientDto;
 		}
 
 		public async Task<bool> DeletePatient(Guid id)
 		{
 			var isDeleted = await patientRepository.Delete(id);
+			if (!isDeleted)
+			{
+				throw new PatientNotFoundException($"Can not found patient with id {id}");
+			}
 			return isDeleted;
 		}
 
@@ -80,6 +89,11 @@ namespace NWEB01.Application.Services.PatientService
 			else
 			{
 				patient = await patientRepository.GetById(id, spec);
+			}
+
+			if (patient == null)
+			{
+				throw new PatientNotFoundException($"Can not found patient with id {id}");
 			}
 			var result = mapper.Map<PatientDTO>(patient);
 			return result;
