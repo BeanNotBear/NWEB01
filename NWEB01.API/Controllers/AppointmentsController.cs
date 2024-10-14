@@ -20,6 +20,7 @@ namespace NWEB01.API.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAll([FromQuery] AppointmentSpeParam appointmentSpeParam)
 		{
+			throw new Exception("Error at get all appointment");
 			var result = await appointmentsService.GetAll(appointmentSpeParam);
 			return Ok(result);
 		}

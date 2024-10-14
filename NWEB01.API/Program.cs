@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using NWEB01.API.Middlewares;
 using NWEB01.Application.Mapping;
 using NWEB01.Application.Services.AppointmentService;
 using NWEB01.Application.Services.DoctorService;
@@ -41,6 +42,8 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
