@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NWEB01.Application.CustomAttribute;
 using NWEB01.Application.DTOs;
 using NWEB01.Application.Services.DoctorService;
 using NWEB01.Domain.Specifications;
 
 namespace NWEB01.API.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
 	[ApiController]
 	public class DoctorsController : ControllerBase
 	{
@@ -30,7 +31,7 @@ namespace NWEB01.API.Controllers
 		public async Task<IActionResult> GetById([FromRoute] Guid id, [FromQuery] bool isIncludeAppointment = false)
 		{
 			var doctor = await doctorService.GetDoctorById(id, isIncludeAppointment);
-			if(doctor == null)
+			if (doctor == null)
 			{
 				return NotFound();
 			}
@@ -38,10 +39,11 @@ namespace NWEB01.API.Controllers
 		}
 
 		[HttpPost]
+		[ValidateModel]
 		public async Task<IActionResult> Create([FromBody] AddDoctorRequest addDoctorRequest)
 		{
 			var doctorDTO = await doctorService.AddDoctor(addDoctorRequest);
-			if(doctorDTO == null)
+			if (doctorDTO == null)
 			{
 				return BadRequest();
 			}
@@ -50,6 +52,7 @@ namespace NWEB01.API.Controllers
 
 		[HttpPut]
 		[Route("{id:guid}")]
+		[ValidateModel]
 		public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateDoctorRequest updateDoctorRequest)
 		{
 			var doctorDTO = await doctorService.UpdateDoctor(id, updateDoctorRequest);

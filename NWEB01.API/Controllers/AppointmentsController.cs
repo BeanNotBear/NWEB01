@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NWEB01.Application.CustomAttribute;
 using NWEB01.Application.DTOs;
 using NWEB01.Application.Services.AppointmentService;
 using NWEB01.Domain.Specifications;
@@ -10,7 +11,7 @@ namespace NWEB01.API.Controllers
 	[ApiController]
 	public class AppointmentsController : ControllerBase
 	{
-		private IAppointmentService appointmentsService;
+		private readonly IAppointmentService appointmentsService;
 
 		public AppointmentsController(IAppointmentService appointmentsService)
 		{
@@ -29,35 +30,24 @@ namespace NWEB01.API.Controllers
 		public async Task<IActionResult> GetById([FromRoute] Guid id, [FromQuery] bool isIncludeDetail)
 		{
 			var result = await appointmentsService.GetById(id, isIncludeDetail);
-			if (result == null)
-			{
-				return NotFound();
-			}
 			return Ok(result);
 		}
 
 		[HttpPost]
+		[ValidateModel]
 		public async Task<IActionResult> Create([FromBody] AddAppointmentRequest addAppointmentRequest)
 		{
 			var result = await appointmentsService.AddAppointment(addAppointmentRequest);
-			if (result == null)
-			{
-				return BadRequest();
-			}
 			return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
 		}
 
 		[HttpPut]
 		[Route("{id:guid}")]
+		[ValidateModel]
 		public async Task<IActionResult> Update([FromRoute] Guid id,
 			[FromBody] UpdateAppointmentRequest appointmentRequest)
 		{
 			var result = await appointmentsService.UpdateAppointment(id, appointmentRequest);
-			if (result == null)
-			{
-				return BadRequest();
-			}
-
 			return Ok(result);
 		}
 
@@ -66,10 +56,6 @@ namespace NWEB01.API.Controllers
 		public async Task<IActionResult> Delete([FromRoute] Guid id)
 		{
 			var isDeleted = await appointmentsService.DeleteAppointment(id);
-			if (!isDeleted)
-			{
-				return NotFound();
-			}
 			return NoContent();
 		}
 
@@ -86,11 +72,6 @@ namespace NWEB01.API.Controllers
 		public async Task<IActionResult> Cancel([FromRoute] Guid id)
 		{
 			var result = await appointmentsService.CancelAppointment(id);
-			if (result == null)
-			{
-				return NotFound();
-			}
-
 			return Ok(result);
 		}
 	}
