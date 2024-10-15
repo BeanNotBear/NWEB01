@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NWEB01.Application.Exceptions
 {
-	public class PatientNotFoundException : NotFoundException
+	public class NotFoundException :  Exception
 	{
-		public PatientNotFoundException(string? message) : base(message)
+		public NotFoundException(string? message) : base(message)
 		{
 		}
 	}

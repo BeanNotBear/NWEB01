@@ -30,10 +30,6 @@ namespace NWEB01.Application.Services.PatientService
 			var patientDomain = mapper.Map<User>(addPatientRequest);
 			patientDomain.Role = (int)Role.Patient;
 			var createdPatient = await patientRepository.Add(patientDomain);
-			if (createdPatient == null)
-			{
-				throw new Exception();
-			}
 			var patientDto = mapper.Map<PatientDTO>(createdPatient);
 			return patientDto;
 		}
@@ -81,7 +77,7 @@ namespace NWEB01.Application.Services.PatientService
 			{
 				spec.AddInclude(x => x.PatientAppointments);
 				patient = await patientRepository.GetById(id, spec);
-				if (patient != null)
+				if (patient is not null)
 				{
 					await JoinDoctor(patient);
 				}
@@ -104,13 +100,17 @@ namespace NWEB01.Application.Services.PatientService
 			var patientDomain = mapper.Map<User>(updatePatientRequest);
 			patientDomain.Id = id;
 			var updatedPatient = await patientRepository.Update(id, patientDomain);
+			if (updatedPatient is null)
+			{
+				throw new PatientNotFoundException($"Can not found patient with id {id}");
+			}
 			var patientDTO = mapper.Map<PatientDTO>(updatedPatient);
 			return patientDTO;
 		}
 
 		private async Task JoinDoctor(User patient)
 		{
-			if (patient.PatientAppointments != null)
+			if (patient.PatientAppointments is not null)
 			{
 				var spec = new BaseSpecification<User>(x => x.Role == (int)Role.Doctor);
 				foreach (var appointment in patient.PatientAppointments)
