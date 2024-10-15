@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using NWEB01.Application.DTOs;
+using NWEB01.Application.Exceptions;
 using NWEB01.Domain.Entities;
 using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
@@ -29,12 +30,20 @@ namespace NWEB01.Application.Services.AppointmentService
 		public async Task<bool> DeleteAppointment(Guid id)
 		{
 			var isDeleted = await appointmentRepository.Delete(id);
+			if (!isDeleted)
+			{
+				throw new AppointmentNotFoundException($"Can not found appointment with id: {id}");
+			}
 			return isDeleted;
 		}
 
 		public async Task<AppointmentDTO?> CancelAppointment(Guid id)
 		{
 			var appointmentDomain = await appointmentRepository.CancelAppointment(id);
+			if (appointmentDomain is null)
+			{
+				throw new AppointmentNotFoundException($"Can not found appointment with id: {id}");
+			}
 			var appointmentDto = mapper.Map<AppointmentDTO>(appointmentDomain);
 			return appointmentDto;
 		}
@@ -104,6 +113,10 @@ namespace NWEB01.Application.Services.AppointmentService
 			}
 
 			var appoitmentDomain = await appointmentRepository.GetById(id, spec);
+			if (appoitmentDomain is null)
+			{
+				throw new AppointmentNotFoundException($"Can not found appointment with id: {id}");
+			}
 			var result = mapper.Map<AppointmentDetailDTO>(appoitmentDomain);
 			return result;
 		}
@@ -113,6 +126,10 @@ namespace NWEB01.Application.Services.AppointmentService
 			var appointmentDomain = mapper.Map<Appointment>(updateAppointmentRequest);
 			appointmentDomain.Id = id;
 			var existedAppointment = await appointmentRepository.Update(id, appointmentDomain);
+			if (existedAppointment is null)
+			{
+				throw new AppointmentNotFoundException($"Can not found appointment with id: {id}");
+			}
 			var appointmentDto = mapper.Map<AppointmentDTO>(existedAppointment);
 			return appointmentDto;
 		}

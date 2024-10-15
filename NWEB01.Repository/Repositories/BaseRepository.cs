@@ -93,9 +93,8 @@ namespace NWEB01.Repository.Repositories
 			if (existingEntity != null)
 			{
 				dbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
+				await dbContext.SaveChangesAsync();
 			}
-
-			await dbContext.SaveChangesAsync();
 			return existingEntity;
 		}
 	}

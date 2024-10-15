@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using NWEB01.Application.DTOs;
+using NWEB01.Application.Exceptions;
 using NWEB01.Domain.Entities;
 using NWEB01.Domain.Interfaces;
 using NWEB01.Domain.Specifications;
@@ -29,9 +30,13 @@ namespace NWEB01.Application.Services.DoctorService
 			return doctorDTO;
 		}
 
-		public Task<bool> DeleteDoctor(Guid id)
+		public async Task<bool> DeleteDoctor(Guid id)
 		{
-			var isDeleted = doctorRepository.Delete(id);
+			var isDeleted = await doctorRepository.Delete(id);
+			if (!isDeleted)
+			{
+				throw new DoctorNotFoundException($"Can not found doctor with id: {id}");
+			}
 			return isDeleted;
 		}
 
@@ -54,6 +59,11 @@ namespace NWEB01.Application.Services.DoctorService
 				// Get the doctor without related appointments
 				doctorDomain = await doctorRepository.GetById(id, spec);
 			}
+
+			if (doctorDomain is null)
+			{
+				throw new DoctorNotFoundException($"Can not found doctor with id: {id}");
+			}
 			var doctorDto = mapper.Map<DoctorDTO>(doctorDomain);
 			return doctorDto;
 		}
@@ -64,7 +74,6 @@ namespace NWEB01.Application.Services.DoctorService
 				(string.IsNullOrEmpty(doctorSpeParam.Search) || x.Name.Contains(doctorSpeParam.Search.EncodingUTF8())) &&
 				(x.Role == 0) &&
 				(doctorSpeParam.Specialization == null || x.Specialization == doctorSpeParam.Specialization)
-
 			);
 
 			var skip = (doctorSpeParam.pageIndex - 1) * doctorSpeParam.pageSize;
@@ -92,6 +101,10 @@ namespace NWEB01.Application.Services.DoctorService
 			var doctorDomain = mapper.Map<User>(updateDoctorRequest);
 			doctorDomain.Id = id;
 			var updatedDoctor = await doctorRepository.Update(id, doctorDomain);
+			if (updatedDoctor is null)
+			{
+				throw new DoctorNotFoundException($"Can not found doctor with id: {id}");
+			}
 			var doctorDto = mapper.Map<DoctorDTO>(updatedDoctor);
 			return doctorDto;
 		}
